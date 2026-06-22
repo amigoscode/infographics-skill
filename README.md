@@ -20,31 +20,33 @@ Built for backend / Java / system-design topics, but works for any technical con
 - A Gemini API key: https://aistudio.google.com/apikey
 - Claude Code (this is a skill; the workflow lives in `SKILL.md`)
 
-## Setup
+## Install
+
+One line. Clones into `~/.claude/skills/infographic`, installs dependencies (including the headless Chromium Playwright needs), and seeds `.env`:
 
 ```bash
-git clone <your-fork-url> infographic-skill
-cd infographic-skill
-npm install               # installs deps + Chromium for Playwright
-
-cp .env.example .env      # then add your GEMINI_API_KEY
+curl -fsSL https://raw.githubusercontent.com/amigoscode/infographics-skill/main/install.sh | bash
 ```
 
-You can also just export the key instead of using `.env`:
+Then add your Gemini API key (get one at https://aistudio.google.com/apikey):
 
 ```bash
-export GEMINI_API_KEY=...
+export GEMINI_API_KEY=...        # or edit ~/.claude/skills/infographic/.env
 ```
 
-### Install as a Claude Code skill
+That is it. Open Claude Code and ask for an infographic (see Usage).
 
-Symlink (or copy) this directory into your skills folder so Claude can discover it:
+<details>
+<summary>Manual install</summary>
 
 ```bash
-ln -s "$(pwd)" ~/.claude/skills/infographic
+git clone https://github.com/amigoscode/infographics-skill.git ~/.claude/skills/infographic
+cd ~/.claude/skills/infographic
+npm install                # installs deps + Chromium for Playwright
+cp .env.example .env       # then add your GEMINI_API_KEY
 ```
 
-Then in Claude Code, just ask for an infographic (see Usage).
+</details>
 
 ## First-run branding (onboarding)
 
