@@ -1,0 +1,6 @@
+{
+  "footerText": "www.yourdomain.com",
+  "logoPath": "assets/your-wordmark.svg",
+  "iconPath": "assets/your-icon.svg",
+  "outputDir": "~/infographics"
+}

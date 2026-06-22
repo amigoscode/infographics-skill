@@ -1,0 +1,21 @@
+{
+  "name": "infographic-skill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generate branded 'HOW X WORKS' educational infographic diagrams with Gemini + Playwright.",
+  "license": "MIT",
+  "scripts": {
+    "generate": "tsx assets/generate-diagram.ts",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "@google/genai": "^1.46.0",
+    "dotenv": "^17.3.1",
+    "mime": "^4.1.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0",
+    "tsx": "^4.19.0"
+  }
+}

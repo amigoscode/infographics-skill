@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Per-user config (created on first run via onboarding)
+config.json
+
+# Dependencies (directories and stray symlinks)
+node_modules
+
+# Generated output
+/output/
+
+# OS / editor cruft
+.DS_Store
+*.log
