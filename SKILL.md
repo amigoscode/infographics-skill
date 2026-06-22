@@ -105,7 +105,7 @@ Note: Gemini may save as `.jpg` instead of `.png`. That is fine, just use whatev
 ### Step 4: Create the branded HTML
 
 Read the template from `SKILL_DIR/assets/template.html` and create a copy in the output directory, replacing the placeholders:
-- `{{TITLE}}`: the topic title, ALL CAPS
+- `{{TITLE}}`: the topic title, ALL CAPS. Keep it SHORT so it fits on one line next to the icon (see title rules below)
 - `{{DIAGRAM_SRC}}`: the raw diagram filename (relative to the HTML file, so just the filename works)
 - `{{DIAGRAM_ALT}}`: the topic name
 - `{{FOOTER_TEXT}}`: `footerText` from `config.json`
@@ -115,7 +115,14 @@ Read the template from `SKILL_DIR/assets/template.html` and create a copy in the
 Icon rules:
 - Pick the appropriate tech icon URL (lobehub or devicon) for `{{ICON_PATH}}`.
 - **If the topic is generic/comparison with no specific technology icon**, set `{{ICON_PATH}}` to the absolute path of `logoPath` from `config.json` (the brand logo doubles as the fallback icon). Do not leave a default placeholder.
-- **If the title is long (more than ~25 characters), REMOVE the icon entirely** by deleting the `<div class="tech-icon">...</div>` element. Long titles collide with the icon on the top-left. Short titles like "HOW SSH WORKS" or "HOW DOCKER WORKS" are fine with an icon. Long titles like "10 AI TERMS EVERY DEV MUST KNOW" or "JAVA PASS BY VALUE VS REFERENCE" should have no icon.
+- **NEVER remove the icon.** Every infographic keeps the top-left icon. The `<div class="tech-icon">` element always stays.
+
+Title rules:
+- **If the full "HOW X WORKS" title is long (more than ~16 characters) and would collide with the icon, SHORTEN the on-image title instead of removing the icon.** Trim filler words: drop "HOW" and "WORKS/WORK" and any redundant words, keeping only the core subject so it fits on one line next to the icon.
+- Examples: "HOW JAVA VIRTUAL THREADS WORK" → "VIRTUAL THREADS"; "HOW KUBERNETES SCHEDULING WORKS" → "K8S SCHEDULING"; "JAVA PASS BY VALUE VS REFERENCE" → "PASS BY VALUE"; "10 AI TERMS EVERY DEV MUST KNOW" → "AI TERMS".
+- The icon often already conveys the technology, so the shortened title does not need to repeat it (a Java icon plus "VIRTUAL THREADS" reads cleanly).
+- Short titles like "HOW SSH WORKS" or "HOW DOCKER WORKS" already fit and need no shortening.
+- The **folder name** always uses the full "How [Topic] Works" form. Only the on-image `{{TITLE}}` is shortened.
 
 Save as `<outputDir>/How [Topic] Works/How [Topic] Works.html`.
 
@@ -406,7 +413,7 @@ Always pass **all three** reference images via `--ref` flags to `generate-diagra
 ## HTML Template
 
 The template is at `assets/template.html`. It uses placeholders (filled in Step 4) and contains:
-- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, from lobehub/devicon CDN, or the brand `logoPath` for generic topics, or removed for long titles)
+- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, from lobehub/devicon CDN, or the brand `logoPath` for generic topics; always present, never removed)
 - **Top-right**: Title `{{TITLE}}` in bold uppercase Inter font (right-aligned)
 - **Center**: The diagram image `{{DIAGRAM_SRC}}` (`object-fit: contain`)
 - **Bottom-left**: Footer text `{{FOOTER_TEXT}}` (Epilogue font, regular weight), from `config.json`
