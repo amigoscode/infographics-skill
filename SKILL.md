@@ -7,6 +7,12 @@ description: "Generate 'HOW X WORKS' educational infographic diagrams for Amigos
 
 Generate branded educational infographic diagrams. The user provides a topic, you generate everything and deliver a final PNG plus caption.
 
+**Two required deliverables for every run:**
+1. The final branded PNG (Steps 1 to 5)
+2. `caption.txt` (Step 6)
+
+You are NOT done until BOTH exist in the output folder. Create a todo per step so the caption is not skipped. The image alone is an incomplete result.
+
 Branding (logo, footer text) is configurable. See **Step 0**. The first time the skill runs it asks for these and saves them to `config.json`.
 
 ## Prerequisites
@@ -126,7 +132,7 @@ npx playwright screenshot \
   "<outputDir>/How [Topic] Works/How [Topic] Works.png"
 ```
 
-The output PNG is the **final deliverable**.
+This PNG is the branded image, but the run is **not finished**: you must still write the caption in Step 6.
 
 ### Step 6: Write the caption
 
@@ -230,7 +236,9 @@ print(f'CSV updated: {topic} -> generated=yes')
 
 ### Step 8: Deliver
 
-Show the user the final branded PNG and tell them the output directory path.
+First confirm BOTH deliverables exist in the output folder: the final PNG and `caption.txt`. If `caption.txt` is missing, go back and do Step 6 now.
+
+Then show the user the final branded PNG, paste the caption, and tell them the output directory path.
 
 ---
 
