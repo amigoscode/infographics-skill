@@ -43,8 +43,7 @@ Read `SKILL_DIR/config.json`.
 **If `config.json` does NOT exist**, this is the first run. Use the Ask tool to collect branding from the user, then write `config.json`. Ask for:
 
 1. **Footer text**: the URL or text shown at the bottom-left of every infographic. Default: `www.amigoscode.com`.
-2. **Logo path**: path to an SVG or PNG wordmark shown bottom-center. Default: `assets/amigoscode-wordmark.svg` (the bundled logo). The user can point this at their own file.
-3. **Icon path**: path to an SVG or PNG fallback brand icon shown top-left when a topic has no specific tech icon. Default: `assets/amigoscode-icon.svg` (the bundled icon). The user can point this at their own file.
+2. **Logo path**: path to an SVG or PNG wordmark shown bottom-center. Default: `assets/amigoscode-wordmark.svg` (the bundled logo). The user can point this at their own file. This logo is also used as the top-left fallback icon for topics with no specific tech icon.
 
 Then write `SKILL_DIR/config.json`:
 
@@ -52,14 +51,13 @@ Then write `SKILL_DIR/config.json`:
 {
   "footerText": "<their footer text>",
   "logoPath": "<their logo path>",
-  "iconPath": "<their icon path>",
   "outputDir": "~/infographics"
 }
 ```
 
 `outputDir` is where infographics are saved. Keep its default unless the user asks to change it.
 
-**If `config.json` exists**, load it and use `footerText`, `logoPath`, `iconPath`, and `outputDir` throughout the workflow below.
+**If `config.json` exists**, load it and use `footerText`, `logoPath`, and `outputDir` throughout the workflow below.
 
 ### Step 1: Create the output directory
 
@@ -110,7 +108,7 @@ Read the template from `SKILL_DIR/assets/template.html` and create a copy in the
 
 Icon rules:
 - Pick the appropriate tech icon URL (lobehub or devicon) for `{{ICON_PATH}}`.
-- **If the topic is generic/comparison with no specific technology icon**, set `{{ICON_PATH}}` to the absolute path of `iconPath` from `config.json` (the bundled brand icon). Do not leave a default placeholder.
+- **If the topic is generic/comparison with no specific technology icon**, set `{{ICON_PATH}}` to the absolute path of `logoPath` from `config.json` (the brand logo doubles as the fallback icon). Do not leave a default placeholder.
 - **If the title is long (more than ~25 characters), REMOVE the icon entirely** by deleting the `<div class="tech-icon">...</div>` element. Long titles collide with the icon on the top-left. Short titles like "HOW SSH WORKS" or "HOW DOCKER WORKS" are fine with an icon. Long titles like "10 AI TERMS EVERY DEV MUST KNOW" or "JAVA PASS BY VALUE VS REFERENCE" should have no icon.
 
 Save as `<outputDir>/How [Topic] Works/How [Topic] Works.html`.
@@ -393,15 +391,15 @@ Always pass **all three** reference images via `--ref` flags to `generate-diagra
 ## HTML Template
 
 The template is at `assets/template.html`. It uses placeholders (filled in Step 4) and contains:
-- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, from lobehub/devicon CDN, or the brand `iconPath` for generic topics, or removed for long titles)
+- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, from lobehub/devicon CDN, or the brand `logoPath` for generic topics, or removed for long titles)
 - **Top-right**: Title `{{TITLE}}` in bold uppercase Inter font (right-aligned)
 - **Center**: The diagram image `{{DIAGRAM_SRC}}` (`object-fit: contain`)
 - **Bottom-left**: Footer text `{{FOOTER_TEXT}}` (Epilogue font, regular weight), from `config.json`
 - **Bottom-center**: Brand wordmark `{{LOGO_PATH}}` (38px height), from `config.json`
 
-The bundled brand assets are `assets/amigoscode-wordmark.svg` (default `logoPath`) and `assets/amigoscode-icon.svg` (default `iconPath`). Point `config.json` at your own files to rebrand.
+The bundled brand asset is `assets/amigoscode-wordmark.svg` (default `logoPath`). Point `config.json` at your own file to rebrand.
 
 Tech icon sources for `{{ICON_PATH}}` (in priority order):
 1. **Lobehub CDN**: `https://cdn.jsdelivr.net/npm/@lobehub/icons-static-png@latest/dark/{name}-color.png`
 2. **Devicon CDN**: `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-original.svg`
-3. **Brand fallback**: the `iconPath` from `config.json` (local, for generic topics)
+3. **Brand fallback**: the `logoPath` from `config.json` (local, for generic topics)

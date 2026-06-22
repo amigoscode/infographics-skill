@@ -53,7 +53,7 @@ cp .env.example .env       # then add your GEMINI_API_KEY
 The first time the skill runs it asks you for:
 
 - **Footer text**: the URL shown bottom-left (default `www.amigoscode.com`)
-- **Logo path**: the wordmark shown bottom-center (default `assets/amigoscode-wordmark.svg`)
+- **Logo path**: the wordmark shown bottom-center, also used as the top-left fallback icon for generic topics (default `assets/amigoscode-wordmark.svg`)
 
 Your answers are saved to `config.json` (git-ignored). To rebrand, drop your own SVG/PNG into `assets/` and edit `config.json`:
 
@@ -61,7 +61,6 @@ Your answers are saved to `config.json` (git-ignored). To rebrand, drop your own
 {
   "footerText": "www.yourdomain.com",
   "logoPath": "assets/your-wordmark.svg",
-  "iconPath": "assets/your-icon.svg",
   "outputDir": "~/infographics"
 }
 ```
@@ -102,13 +101,12 @@ infographic-skill/
     ├── template.html             # branded slide (placeholders)
     ├── caption-examples.md        # caption hook patterns + examples
     ├── amigoscode-wordmark.svg   # default brand logo (swap for your own)
-    ├── amigoscode-icon.svg       # default brand icon
     └── reference-*.jpeg          # style reference diagrams
 ```
 
 ## A note on branding
 
-The bundled `amigoscode-wordmark.svg`, `amigoscode-icon.svg`, and `reference-*.jpeg` files are Amigoscode brand assets, included as working defaults. If you use this skill for your own content, replace them with your own logo and references via `config.json`.
+The bundled `amigoscode-wordmark.svg` and `reference-*.jpeg` files are Amigoscode brand assets, included as working defaults. If you use this skill for your own content, replace them with your own logo (SVG or PNG) and references via `config.json`.
 
 ## License
 
