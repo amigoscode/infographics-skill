@@ -1,5 +1,8 @@
 {
   "footerText": "www.yourdomain.com",
   "logoPath": "assets/your-wordmark.svg",
-  "outputDir": "~/infographics"
+  "outputDir": "~/infographics",
+  "ctaLine": "Follow for practical lessons that help developers think like real software engineers",
+  "newsletterUrl": "",
+  "newsletterLine": "One backend lesson in your inbox every week → {{NEWSLETTER_URL}}"
 }

@@ -138,7 +138,14 @@ This PNG is the branded image, but the run is **not finished**: you must still w
 
 Create `caption.txt` in the output directory using the system prompt below.
 
-**Before writing, READ `assets/caption-examples.md` end-to-end.** That file contains a menu of strong hook patterns and four worked examples each using a DIFFERENT hook style. Pick a hook pattern that matches the topic and rotate styles across the week — never use the same opener twice in a row.
+**Before writing, ASK the user (via the Ask tool) for the two configurable footer lines.** Always ask, every run, even though defaults exist in `config.json`:
+
+1. **Closing CTA line** — the final "Follow ..." line. Offer the saved `config.json` `ctaLine` as the first/recommended option, plus a couple of variants, and let the user pick or write their own via "Other". Save the chosen value back to `config.json` field `ctaLine`.
+2. **Mailing list link** — ask for the newsletter/subscribe URL. Offer "No mailing list line" as one option and the saved `newsletterUrl` as another. If the user gives a URL, save it to `config.json` field `newsletterUrl` and add the subscribe line to the caption using the `newsletterLine` template (replace `{{NEWSLETTER_URL}}` with the URL). If the user picks "No mailing list line", omit it.
+
+Caption ending order: engaging question, then "Share your thoughts below", then the mailing list subscribe line (if any), then the closing CTA line. Use the `→` symbol for the subscribe line, not a hyphen or arrow made of characters.
+
+**Then READ `assets/caption-examples.md` end-to-end.** That file contains a menu of strong hook patterns and four worked examples each using a DIFFERENT hook style. Pick a hook pattern that matches the topic and rotate styles across the week — never use the same opener twice in a row.
 
 **Caption system prompt:**
 
