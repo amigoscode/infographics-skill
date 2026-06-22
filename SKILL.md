@@ -145,10 +145,12 @@ This PNG is the branded image, but the run is **not finished**: you must still w
 
 Create `caption.txt` in the output directory using the system prompt below.
 
-**Before writing, ASK the user (via the Ask tool) for the two configurable footer lines.** Always ask, every run, even though defaults exist in `config.json`:
+**Use the two configurable footer lines straight from `config.json`. Do NOT ask the user every run.** They are bundled into config so the run stays uninterrupted:
 
-1. **Closing CTA line** — the final "Follow ..." line. Offer the saved `config.json` `ctaLine` as the first/recommended option, plus a couple of variants, and let the user pick or write their own via "Other". Save the chosen value back to `config.json` field `ctaLine`.
-2. **Mailing list link** — ask for the newsletter/subscribe URL. Offer "No mailing list line" as one option and the saved `newsletterUrl` as another. If the user gives a URL, save it to `config.json` field `newsletterUrl` and add the subscribe line to the caption using the `newsletterLine` template (replace `{{NEWSLETTER_URL}}` with the URL). If the user picks "No mailing list line", omit it.
+1. **Closing CTA line** — use `config.json` field `ctaLine` verbatim as the final line.
+2. **Mailing list line** — if `config.json` has a non-empty `newsletterUrl`, add the subscribe line by taking the `newsletterLine` template and replacing `{{NEWSLETTER_URL}}` with `newsletterUrl`. If `newsletterUrl` is empty or missing, omit the subscribe line.
+
+Only revisit these if the user explicitly asks to change the CTA or newsletter wording/link in their message; in that case update the relevant `config.json` field and use the new value. Otherwise never prompt.
 
 Caption ending order: engaging question, then "Share your thoughts below", then the mailing list subscribe line (if any), then the closing CTA line. Use the `→` symbol for the subscribe line, not a hyphen or arrow made of characters.
 
