@@ -44,6 +44,7 @@ Read `SKILL_DIR/config.json`.
 
 1. **Footer text**: the URL or text shown at the bottom-left of every infographic. Default: `www.amigoscode.com`.
 2. **Logo path**: path to an SVG or PNG wordmark shown bottom-center. Default: `assets/amigoscode-wordmark.svg` (the bundled logo). The user can point this at their own file.
+3. **Icon path**: path to an SVG or PNG fallback brand icon shown top-left when a topic has no specific tech icon. Default: `assets/amigoscode-icon.svg` (the bundled icon). The user can point this at their own file.
 
 Then write `SKILL_DIR/config.json`:
 
@@ -51,12 +52,12 @@ Then write `SKILL_DIR/config.json`:
 {
   "footerText": "<their footer text>",
   "logoPath": "<their logo path>",
-  "iconPath": "assets/amigoscode-icon.svg",
+  "iconPath": "<their icon path>",
   "outputDir": "~/infographics"
 }
 ```
 
-`iconPath` is the fallback brand icon used top-left when a topic has no specific tech icon. `outputDir` is where infographics are saved. Keep these defaults unless the user asks to change them.
+`outputDir` is where infographics are saved. Keep its default unless the user asks to change it.
 
 **If `config.json` exists**, load it and use `footerText`, `logoPath`, `iconPath`, and `outputDir` throughout the workflow below.
 
