@@ -49,7 +49,7 @@ Read `SKILL_DIR/config.json`.
 **If `config.json` does NOT exist**, this is the first run. Use the Ask tool to collect branding from the user, then write `config.json`. Ask for:
 
 1. **Footer text**: the URL or text shown at the bottom-left of every infographic. Default: `www.amigoscode.com`.
-2. **Logo path**: path to an SVG or PNG wordmark shown bottom-center. Default: `assets/amigoscode-wordmark.svg` (the bundled logo). The user can point this at their own file. This logo is also used as the top-left fallback icon for topics with no specific tech icon.
+2. **Logo path**: path to an SVG or PNG wordmark shown bottom-center. Default: `assets/amigoscode-wordmark.svg` (the bundled logo). The user can point this at their own file.
 
 Then write `SKILL_DIR/config.json`:
 
@@ -112,10 +112,24 @@ Read the template from `SKILL_DIR/assets/template.html` and create a copy in the
 - `{{LOGO_PATH}}`: `logoPath` from `config.json` (use the absolute path so the screenshot can resolve it)
 - `{{ICON_PATH}}`: the tech icon (see below)
 
-Icon rules:
-- Pick the appropriate tech icon URL (lobehub or devicon) for `{{ICON_PATH}}`.
-- **If the topic is generic/comparison with no specific technology icon**, set `{{ICON_PATH}}` to the absolute path of `logoPath` from `config.json` (the brand logo doubles as the fallback icon). Do not leave a default placeholder.
-- **NEVER remove the icon.** Every infographic keeps the top-left icon. The `<div class="tech-icon">` element always stays.
+Icon rules (deterministic: download a REAL tech icon to a local file, or show no icon):
+
+The icon MUST be an actual file sitting next to the HTML. Do NOT put a raw remote URL or a guessed bare filename in `{{ICON_PATH}}` — remote URLs 404 on wrong slugs or load too slowly for the screenshot, and a guessed filename that was never downloaded is a dead link. Both render a blank icon.
+
+1. **Identify the devicon slug** for the topic's technology (e.g. `docker`, `kubernetes`, `java`, `postgresql`, `redis`, `python`, `react`, `apachekafka`). Devicon naming is exact, so use the real slug. For generic/comparison topics with no specific technology, skip to step 4 (no icon).
+2. **Download the icon into the output folder** as `icon.svg`, trying the `-original` then `-plain` devicon variant and stopping at the first success. `curl -f` fails on 404, so chain with `||`:
+
+   ```bash
+   ICON="<outputDir>/How [Topic] Works/icon.svg"
+   NAME="docker"   # the exact devicon slug
+   curl -fsSL "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${NAME}/${NAME}-original.svg" -o "$ICON" \
+     || curl -fsSL "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${NAME}/${NAME}-plain.svg" -o "$ICON" \
+     || rm -f "$ICON"
+   ```
+
+3. **Verify** the file exists and is non-empty (`test -s "$ICON"`). If it is empty or was not downloaded, treat it as no icon (step 4).
+4. **No icon found (fallback is EMPTY):** do not substitute the brand logo or any placeholder. Remove the entire `<div class="tech-icon">...</div>` element from the HTML so the slot is blank. The diagram still leads with its intro blurbs; an empty top-left is fine.
+5. **If an icon WAS downloaded**, set `{{ICON_PATH}}` to the co-located filename `icon.svg`. Since it lives next to the HTML, the `file://` screenshot always resolves it. Keep the `<div class="tech-icon">` element.
 
 Title rules:
 - **If the full "HOW X WORKS" title is long (more than ~16 characters) and would collide with the icon, SHORTEN the on-image title instead of removing the icon.** Trim filler words: drop "HOW" and "WORKS/WORK" and any redundant words, keeping only the core subject so it fits on one line next to the icon.
@@ -415,7 +429,7 @@ Always pass **all three** reference images via `--ref` flags to `generate-diagra
 ## HTML Template
 
 The template is at `assets/template.html`. It uses placeholders (filled in Step 4) and contains:
-- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, from lobehub/devicon CDN, or the brand `logoPath` for generic topics; always present, never removed)
+- **Top-left**: Tech icon `{{ICON_PATH}}` (80px, a co-located `icon.svg` downloaded from devicon; the whole div is removed when no real tech icon exists)
 - **Top-right**: Title `{{TITLE}}` in bold uppercase Inter font (right-aligned)
 - **Center**: The diagram image `{{DIAGRAM_SRC}}` (`object-fit: contain`)
 - **Bottom-left**: Footer text `{{FOOTER_TEXT}}` (Epilogue font, regular weight), from `config.json`
@@ -423,7 +437,7 @@ The template is at `assets/template.html`. It uses placeholders (filled in Step 
 
 The bundled brand asset is `assets/amigoscode-wordmark.svg` (default `logoPath`). Point `config.json` at your own file to rebrand.
 
-Tech icon sources for `{{ICON_PATH}}` (in priority order):
-1. **Lobehub CDN**: `https://cdn.jsdelivr.net/npm/@lobehub/icons-static-png@latest/dark/{name}-color.png`
-2. **Devicon CDN**: `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-original.svg`
-3. **Brand fallback**: the `logoPath` from `config.json` (local, for generic topics)
+Tech icon source to download from (Step 4 tries the variants and stops at the first success). `{{ICON_PATH}}` itself is always the co-located local filename `icon.svg`, never a raw URL:
+1. **Devicon `-original`**: `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-original.svg`
+2. **Devicon `-plain`**: `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-plain.svg`
+3. **No icon (empty fallback)**: if both 404, remove the `<div class="tech-icon">` element entirely. Do not use the brand logo.

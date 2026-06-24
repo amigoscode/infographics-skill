@@ -109,8 +109,11 @@
                        topic). See SKILL.md Step 4 title rules.
     {{DIAGRAM_SRC}}  - path/filename of the generated raw diagram image
     {{DIAGRAM_ALT}}  - alt text (the topic name)
-    {{ICON_PATH}}    - tech icon: a lobehub/devicon CDN URL, or config.logoPath
-                       for generic topics. Always present, never removed.
+    {{ICON_PATH}}    - tech icon: a CO-LOCATED local filename ("icon.svg") that
+                       Step 4 downloaded into this folder. NEVER a raw remote URL
+                       or a guessed filename. If no real tech icon is available,
+                       DELETE the whole .tech-icon div below (empty fallback, no
+                       brand logo).
     {{LOGO_PATH}}    - brand wordmark, from config.logoPath
     {{FOOTER_TEXT}}  - footer URL/text, from config.footerText
 -->
